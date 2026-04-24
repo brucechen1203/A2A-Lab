@@ -1,3 +1,6 @@
+# a2a-lab
+
+```text
 a2a-lab/
   server/
     main.py            # A2A Server
@@ -12,3 +15,4 @@ a2a-lab/
     deploy_cloud_run.sh
     deploy_agent_engine.py
   report.md            # Written answers (Part 6)
+```
