@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -26,9 +26,19 @@ class TextPart(BaseModel):
 	text: str
 
 
+class FilePayload(BaseModel):
+	url: str
+	mimeType: str
+
+
+class FilePart(BaseModel):
+	type: str = "file"
+	file: FilePayload
+
+
 class Message(BaseModel):
 	role: str
-	parts: list[TextPart]
+	parts: list[Union[TextPart, FilePart]]
 
 
 class TaskRequest(BaseModel):

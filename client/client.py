@@ -70,8 +70,19 @@ class A2AClient:
 	# -- 4. Helper: extract result text -------------------------------
 	@staticmethod
 	def extract_text(response: dict) -> str:
-		"""Pull the first text part from artifacts."""
+		"""Pull text from artifacts, or a file URL when the first part is a file."""
 		artifacts = response.get("artifacts", [])
+		if artifacts:
+			first_parts = artifacts[0].get("parts", [])
+			if first_parts:
+				first_part = first_parts[0]
+				if first_part.get("type") == "file":
+					file_info = first_part.get("file", {})
+					if isinstance(file_info, dict):
+						url = file_info.get("url")
+						if isinstance(url, str):
+							return url
+
 		for artifact in artifacts:
 			for part in artifact.get("parts", []):
 				if part.get("type") == "text":
