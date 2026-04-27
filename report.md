@@ -22,3 +22,13 @@ A realistic workflow is contract review automation:
 5. A coordinator agent merges outputs and returns an artifact with a textual executive summary and optional links to generated annotated files.
 
 This uses all three part types together: natural-language intent (`text`), binary/document input (`file`), and machine-readable parameters (`data`).
+
+## Section 4: Cloud Run Deployment and Scaling
+
+### 1. What does the `--allow-unauthenticated` flag do, and what are the security implications?
+The `--allow-unauthenticated` flag makes the Cloud Run service publicly reachable without requiring an identity token or IAM-based login. That is convenient for demos and browser-accessible endpoints, but it also means anyone who knows the URL can call the service. The security implication is that access control moves from authentication to obscurity plus application-level checks, so the service must not expose sensitive data or privileged actions unless you add your own auth, verification, or network restrictions.
+
+### 2. How does Cloud Run scale to zero, and what does cold start latency mean for A2A clients?
+Cloud Run can scale a service down to zero active instances when there is no traffic, so the platform stops billing for idle compute. When a new request arrives after the service has been idle, Cloud Run must start a fresh instance before it can handle the request. That startup delay is called cold start latency.
+
+For A2A clients, cold starts mean the first request after inactivity may be slower or time out if the client expects an immediate response. Clients should be prepared for variable latency, use retries or longer timeouts when appropriate, and treat the first request as potentially slower than steady-state traffic.

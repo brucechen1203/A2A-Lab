@@ -2,7 +2,7 @@ from client import A2AClient
 
 
 def main() -> None:
-	agent_url = "http://localhost:8000"
+	agent_url = "https://echo-a2a-agent-1023756628520.us-central1.run.app/"
 
 	with A2AClient(agent_url) as client:
 		card = client.fetch_agent_card()
